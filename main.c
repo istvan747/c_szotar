@@ -4,17 +4,10 @@
 
 
 int main(void){
-	WORD word;
+    char * aword = "á";
+    char * bword = "halihoo";
 
-	word.id = 7;
-	word.hungary = "macska";
-	word.english = "cat";
-	word.next = NULL;
-	word.prev = NULL;
-
-	add(word);
-
-	printWord(getByID(0));
+	printf("%s compare %s: %d", aword, bword, compare(aword, bword));
 
 	exit(0);
 }

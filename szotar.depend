@@ -8,6 +8,18 @@
 	<stdlib.h>
 	<string.h>
 
-1545765268 d:\c\szotar\list.h
+1545769041 d:\c\szotar\list.h
 	"typeDefAndIncludes.h"
+
+1545769871 source:d:\c\szotar\main.c
+	"typeDefAndIncludes.h"
+	"list.h"
+	"stringfv.h"
+
+1545769689 d:\c\szotar\stringfv.h
+
+1545770006 source:d:\c\szotar\stringfv.c
+	"typeDefAndIncludes.h"
+	"stringfv.h"
+	<math.h>
 

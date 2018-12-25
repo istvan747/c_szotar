@@ -1,3 +1,6 @@
+#ifndef __LIST__
+#define __LIST__
+
 #include "typeDefAndIncludes.h"
 
 extern int add(WORD);	//kész
@@ -62,3 +65,5 @@ extern int deleteIndex(ID); //kész
 extern int swapIndex(ID, ID); //kész
 
 extern WORD * getByIndex(ID);	//kész
+
+#endif // __LIST__
