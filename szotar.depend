@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1545765268 source:d:\c\szotar\list.c
+	"typeDefAndIncludes.h"
+	"list.h"
+
+1545765268 d:\c\szotar\typedefandincludes.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1545765268 d:\c\szotar\list.h
+	"typeDefAndIncludes.h"
+
