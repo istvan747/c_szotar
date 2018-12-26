@@ -3,67 +3,61 @@
 
 #include "typeDefAndIncludes.h"
 
-extern int add(WORD);	//kÃ©sz
+extern int add(WORD);	//kész
 
-extern int deleteWord(WORD);	//kÃ©sz
+extern int deleteWord(WORD);	//kész
 
-extern int update(WORD);	//kÃ©sz
+extern int update(WORD);	//kész
 
-extern WORD * getByID(ID);	//kÃ©sz
+extern WORD * getByID(ID);	//kész
 
 extern WORD * getByHungary(char *);
 
 extern WORD * getByEnglish(char *);
 
-extern long int getCount();	//kÃ©sz
+extern long int getCount();	//kész
 
-extern void printWord(WORD * );	//kÃ©sz
+extern void printWord(WORD *, int);	//kész
 
-extern WORD * getFirst();	//kÃ©sz
+extern WORD * getFirst();	//kész
 
-extern WORD * getLast();	//kÃ©sz
+extern WORD * getLast();	//kész
 
-extern WORD * getNext();	//kÃ©sz
+extern WORD * getNext();	//kész
 
-extern WORD * getPrev();	//kÃ©sz
+extern WORD * getPrev();	//kész
 
-extern int hasNext();	//kÃ©sz
+extern int hasNext();	//kész
 
-extern int hasPrev();	//kÃ©sz
+extern int hasPrev();	//kész
 
-extern ID getLastID();	//kÃ©sz
+extern ID getLastID();	//kész
 
-extern void swapWords(WORD *, WORD *);	//kÃ©sz
+extern void swapWords(WORD *, WORD *);	//kész
 
-extern void setPointerFirst(); //kÃ©sz
+extern void setPointerFirst(); //kész
 
-extern void setPointerLast();	//kÃ©sz
+extern void setPointerLast();	//kész
 
-extern long int setPointer(ID id);	//kÃ©sz
+extern long int setPointer(ID id);	//kész
 
-extern long int getPointer();	//kÃ©sz
+extern long int getPointer();	//kész
 
-extern void sortByHungaryDecreasing();
-
-extern void sortByHungaryAscendant();
-
-extern void sortByEnglishDecreasing();
-
-extern void sortByEnglishAscendant();
+extern void sortByHungary(signed int, int); //kész
 
 
 /*
 
-index tÃ¡bla fÃ¼ggvÃ©nyek
+index tábla függvények
 
 */
 
-extern int addIndex(ID , WORD *); //kÃ©sz
+extern int addIndex(ID , WORD *); //kész
 
-extern int deleteIndex(ID); //kÃ©sz
+extern int deleteIndex(ID); //kész
 
-extern int swapIndex(ID, ID); //kÃ©sz
+extern int swapIndex(ID, ID); //kész
 
-extern WORD * getByIndex(ID);	//kÃ©sz
+extern WORD * getByIndex(ID);	//kész
 
 #endif // __LIST__

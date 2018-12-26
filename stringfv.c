@@ -1,7 +1,12 @@
 #include "typeDefAndIncludes.h"
 #include "stringfv.h"
 #include<math.h>
+/*
+    ha egyenlõ akkor 0
+    ha strA hamarabb van az ABC-ben, akkor 1
+    egyébbként -1
 
+*/
 signed int compare(char * strA, char * strB){
     int strALength = strlen(strA);
     int strBLength = strlen(strB);
@@ -15,5 +20,9 @@ signed int compare(char * strA, char * strB){
         else
             return -1;
     }
+    if(strALength < strBLength)
+        return 1;
+    if(strALength > strBLength)
+        return -1;
     return 0;
 }

@@ -1,24 +1,25 @@
 # depslib dependency file v1.0
-1545765268 source:d:\c\szotar\list.c
-	"typeDefAndIncludes.h"
-	"list.h"
-
-1545765268 d:\c\szotar\typedefandincludes.h
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-
-1545769041 d:\c\szotar\list.h
-	"typeDefAndIncludes.h"
-
-1545769871 source:d:\c\szotar\main.c
+1545850598 source:d:\c\szotar\list.c
 	"typeDefAndIncludes.h"
 	"list.h"
 	"stringfv.h"
 
-1545769689 d:\c\szotar\stringfv.h
+1545849766 d:\c\szotar\typedefandincludes.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 
-1545770006 source:d:\c\szotar\stringfv.c
+1545849563 d:\c\szotar\list.h
+	"typeDefAndIncludes.h"
+
+1545852501 source:d:\c\szotar\main.c
+	"typeDefAndIncludes.h"
+	"list.h"
+	"stringfv.h"
+
+1545770057 d:\c\szotar\stringfv.h
+
+1545850903 source:d:\c\szotar\stringfv.c
 	"typeDefAndIncludes.h"
 	"stringfv.h"
 	<math.h>

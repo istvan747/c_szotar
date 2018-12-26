@@ -1,5 +1,6 @@
 #include "typeDefAndIncludes.h"
 #include "list.h"
+#include "stringfv.h"
 
 WORD * head = NULL;
 WORD * tail = NULL;
@@ -110,7 +111,7 @@ int update(WORD word){
 
 WORD * getByID(ID retID){
 	WORD * word = NULL;
-	if(retID < id){
+	if(retID < id && retID >= 0){
 		word = getByIndex(retID);
 	}
 	return word;
@@ -128,7 +129,19 @@ ID getLastID(){
 WORD * getByHungary(char * hungaryWord){
 	WORD * word;
 	word = NULL;
-
+	long int tmpPointer = getPointer();
+	short flag = FALSE;
+	setPointerFirst();
+	while(hasNext()){
+        word = getNext();
+        if(compare(hungaryWord, word->hungary) == 0){
+            flag = TRUE;
+            break;
+        }
+	}
+	if(flag == FALSE)
+        word = NULL;
+    setPointer(tmpPointer);
 	return word;
 }
 
@@ -136,21 +149,48 @@ WORD * getByHungary(char * hungaryWord){
 WORD * getByEnglish(char * englishWord){
 	WORD * word;
 	word = NULL;
-
+	long int tmpPointer = getPointer();
+	short flag = FALSE;
+	setPointerFirst();
+	while(hasNext()){
+        word = getNext();
+        if(compare(englishWord, word->english) == 0){
+            flag = TRUE;
+            break;
+        }
+	}
+	if(flag == FALSE)
+        word = NULL;
+    setPointer(tmpPointer);
 	return word;
 }
 
 
-void printWord(WORD * word){
+void printWord(WORD * word, int mode){
 	if(word != NULL){
-		printf("address: %p\n", word);
-		printf("ID:      %lu\n", word->id);
-		printf("hun:     %s\n", word->hungary);
-		printf("en:      %s\n", word->english);
-		printf("next:    %p\n", word->next);
-		printf("prev:    %p\n", word->prev);
+        printf("\n");
+        switch(mode){
+        case 0:
+            printf("address: %p\n", word);
+            printf("next:    %p\n", word->next);
+            printf("prev:    %p\n", word->prev);
+        case 1:
+            printf("ID:      %lu\n", word->id);
+        case 2:
+            printf("hun:     %s\n", word->hungary);
+            printf("en:      %s\n", word->english);
+            break;
+        default:
+            printf("address: %p\n", word);
+            printf("ID:      %lu\n", word->id);
+            printf("hun:     %s\n", word->hungary);
+            printf("en:      %s\n", word->english);
+            printf("next:    %p\n", word->next);
+            printf("prev:    %p\n", word->prev);
+        }
+
 	}else{
-		printf("%p\n", word);
+		printf("NULL\n");
 	}
 }
 
@@ -163,41 +203,75 @@ WORD * getLast(){
 }
 
 int hasNext(){
-	int i;
-	for(i = (pointer+1); i < id; i++){
-		if(indexTable[i] != NULL){
-			return TRUE;
-		}
-	}
-	return FALSE;
+    if(pointer < 0){
+        if(head != NULL)
+            return TRUE;
+        else
+            return FALSE;
+    }
+    WORD * tmp = getByID(pointer);
+    if(tmp != NULL){
+        if(tmp->next != NULL)
+            return TRUE;
+    }
+    return FALSE;
 }
 
 int hasPrev(){
-	int i;
-	for(i = (pointer - 1); i > -1; i--){
-		if(indexTable[i] != NULL){
-			return TRUE;
-		}
-	}
-	return FALSE;
+    if(pointer > tail->id){
+        if(tail != NULL)
+            return TRUE;
+        else
+            return FALSE;
+    }
+    WORD * tmp = getByID(pointer);
+    if(tmp != NULL){
+        if(tmp->prev != NULL)
+            return TRUE;
+    }
+    return FALSE;
 }
 
 WORD * getNext(){
-	WORD * result = NULL;
-	while(result == NULL && hasNext()){
-			pointer++;
-			result = getByID(pointer);
-	}
-	return result;
+    WORD * result = NULL;
+    if(pointer < 0){
+        if(head != NULL){
+            result = head;
+        }
+    }else{
+        WORD * tmp = getByID(pointer);
+        if(tmp != NULL){
+            result = tmp->next;
+        }
+    }
+    if(result != NULL){
+        if(result == tail)
+            pointer = tail->id + 1;
+        else
+            pointer = result->id;
+    }
+    return result;
 }
 
 WORD * getPrev(){
-	WORD * result = NULL;
-	while(result == NULL && hasPrev()){
-		pointer--;
-		result = getByID(pointer);
-	}
-	return result;
+    WORD * result = NULL;
+    if(tail != NULL){
+        if(pointer > tail->id){
+            result = tail;
+        }else{
+            WORD * tmp = getByID(pointer);
+            if(tmp != NULL){
+                result = tmp->prev;
+            }
+        }
+        if(result != NULL){
+            if(result == head)
+                pointer = -1;
+            else
+                pointer = result->id;
+        }
+    }
+    return result;
 }
 
 void setPointerFirst(){
@@ -205,7 +279,7 @@ void setPointerFirst(){
 }
 
 void setPointerLast(){
-	pointer = id;
+	pointer = tail->id + 1;
 }
 
 long int setPointer(ID pointerID){
@@ -227,46 +301,130 @@ void swapWords(WORD * aWord, WORD * bWord){
 		WORD * tmpBPrev = bWord->prev;
 		WORD * tmpBNext = bWord->next;
 		swapIndex(aID, bID);
-		aWord->prev = tmpBPrev;
-		aWord->next = tmpBNext;
-		bWord->prev = tmpAPrev;
-		bWord->next = tmpAPrev;
 		aWord->id = bID;
 		bWord->id = aID;
-		if(aWord == head && bWord != tail){
-			tmpBPrev->next = aWord;
-			tmpBNext->prev = aWord;
-			tmpANext->prev = bWord;
-		}else if(aWord == head && bWord == tail){
-			tmpBPrev->next = aWord;
-			tmpANext->prev = bWord;
-		}else if(aWord != head && aWord != tail && bWord != head && bWord != tail){
-			tmpAPrev->next = bWord;
-			tmpBPrev->next = aWord;
-			tmpBNext->prev = aWord;
-			tmpANext->prev = bWord;
-		}else if(aWord != tail && bWord == head){
-			tmpAPrev->next = bWord;
-			tmpANext->prev = bWord;
-			tmpBNext->prev = aWord;
-		}else if(aWord != head && bWord == tail){
-			tmpAPrev->next = bWord;
-			tmpBPrev->next = aWord;
-			tmpANext->prev = bWord;
-		}else if(aWord == tail && bWord == head){
-			tmpAPrev->next = bWord;
-			tmpBNext->prev = aWord;
-		}else if(aWord == tail && bWord != head){
-			tmpBPrev->next = aWord;
-			tmpAPrev->next = bWord;
-			tmpBNext->prev = aWord;
+		if(aWord == head && aWord->next == bWord && bWord != tail){
+            head = bWord;
+            bWord->next = aWord;
+            aWord->next = tmpBNext;
+            tmpBNext->prev = aWord;
+            aWord->prev = bWord;
+            bWord->prev = NULL;
+		}else if(bWord == head && bWord->next == aWord && aWord != tail){
+            head = aWord;
+            aWord->next = bWord;
+            bWord->next = tmpANext;
+            tmpANext->prev = bWord;
+            bWord->prev = aWord;
+            aWord->prev = NULL;
+		}else if(aWord == tail && aWord->prev == bWord && bWord != tail){
+            tail = bWord;
+            tmpBPrev->next = aWord;
+            aWord->next = bWord;
+            bWord->next = NULL;
+            bWord->prev = aWord;
+            aWord->prev = tmpBPrev;
+		}else if(bWord == tail && bWord->prev == aWord && aWord != tail){
+            tail = aWord;
+            tmpAPrev->next = bWord;
+            bWord->next = aWord;
+            aWord->next = NULL;
+            aWord->prev = bWord;
+            bWord->prev = tmpAPrev;
+		}else if(aWord->next == bWord){
+            tmpAPrev->next = bWord;
+            bWord->next = aWord;
+            aWord->next = tmpBNext;
+            tmpBNext->prev = aWord;
+            aWord->prev = bWord;
+            bWord->prev = tmpAPrev;
+		}else if(bWord->next == aWord){
+            tmpBPrev->next = aWord;
+            aWord->next = bWord;
+            bWord->next = tmpANext;
+            tmpANext->prev = bWord;
+            bWord->prev = aWord;
+            aWord->prev = tmpBPrev;
+		}else{
+            aWord->prev = tmpBPrev;
+            aWord->next = tmpBNext;
+            bWord->prev = tmpAPrev;
+            bWord->next = tmpANext;
+            if(aWord == head && bWord != tail){
+                tmpBPrev->next = aWord;
+                tmpBNext->prev = aWord;
+                tmpANext->prev = bWord;
+                head = bWord;
+            }else if(aWord == head && bWord == tail){
+                tmpBPrev->next = aWord;
+                tmpANext->prev = bWord;
+                head = bWord;
+                tail = aWord;
+            }else if(aWord != head && aWord != tail && bWord != head && bWord != tail){
+                tmpAPrev->next = bWord;
+                tmpBPrev->next = aWord;
+                tmpBNext->prev = aWord;
+                tmpANext->prev = bWord;
+            }else if(aWord != tail && bWord == head){
+                tmpAPrev->next = bWord;
+                tmpANext->prev = bWord;
+                tmpBNext->prev = aWord;
+                head = aWord;
+            }else if(aWord != head && bWord == tail){
+                tmpAPrev->next = bWord;
+                tmpBPrev->next = aWord;
+                tmpANext->prev = bWord;
+                tail = aWord;
+            }else if(aWord == tail && bWord == head){
+                tmpAPrev->next = bWord;
+                tmpBNext->prev = aWord;
+                head = aWord;
+                tail = bWord;
+            }else if(aWord == tail && bWord != head){
+                tmpBPrev->next = aWord;
+                tmpAPrev->next = bWord;
+                tmpBNext->prev = aWord;
+                tail = bWord;
+            }
 		}
 	}
 }
 
+
+void sort(signed int order, int according){
+    if(order > 1 || order < -1 || order == 0)
+        order == -1;
+    if(according < 1 || according > 2)
+        according = 1;
+    if(tail != NULL){
+        long int lastID = tail->id;
+        long int i = 0;
+        long int j = 0;
+        for(i = lastID; i > 0; i--){
+            WORD * pivot = getByID(i);
+            if(pivot == NULL)
+                continue;
+            for(j = i - 1; j >= 0; j--){
+                WORD * tmp = getByID(j);
+                if(tmp == NULL)
+                    continue;
+                if(according == 1){
+                    if(compare(pivot->hungary, tmp->hungary) == order)
+                        pivot = tmp;
+                }else{
+                    if(compare(pivot->english, tmp->english) == order)
+                        pivot = tmp;
+                }
+            }
+            if(pivot != getByID(i))
+                swapWords(pivot, getByID(i));
+        }
+    }
+}
+
 /*
 
-index tÃ¡bla fÃ¼ggvÃ©nyek
+index tábla függvények
 
 */
 
@@ -306,7 +464,7 @@ int swapIndex(ID aID, ID bID){
 }
 
 WORD * getByIndex(ID retID){
-	if(retID < id)
+	if(retID < id && retID >= 0)
 		return indexTable[retID];
 	return NULL;
 }
