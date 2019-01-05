@@ -43,7 +43,7 @@ extern long int setPointer(ID id);	//kész
 
 extern long int getPointer();	//kész
 
-extern void sortByHungary(signed int, int); //kész
+extern void sortBy(signed int, int); //kész
 
 
 /*

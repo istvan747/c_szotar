@@ -391,7 +391,7 @@ void swapWords(WORD * aWord, WORD * bWord){
 }
 
 
-void sort(signed int order, int according){
+void sortBy(signed int order, int according){
     if(order > 1 || order < -1 || order == 0)
         order == -1;
     if(according < 1 || according > 2)
